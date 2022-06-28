@@ -1,4 +1,4 @@
-package org.npopov.netgroup.exceptions.handler;
+package org.npopov.conference.exceptions.handler;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;

@@ -1,21 +1,21 @@
-package org.npopov.netgroup;
+package org.npopov.conference;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.npopov.netgroup.conference.Conference;
-import org.npopov.netgroup.conference.ConferenceDTO;
-import org.npopov.netgroup.conference.ConferenceRepository;
-import org.npopov.netgroup.conference.ConferenceService;
-import org.npopov.netgroup.exceptions.PersonAlreadyParticipating;
-import org.npopov.netgroup.exceptions.RoomIsFullException;
-import org.npopov.netgroup.exceptions.TimeNotAvailableException;
-import org.npopov.netgroup.person.Person;
-import org.npopov.netgroup.person.PersonService;
-import org.npopov.netgroup.room.Room;
-import org.npopov.netgroup.room.RoomService;
+import org.npopov.conference.conference.Conference;
+import org.npopov.conference.conference.ConferenceDTO;
+import org.npopov.conference.conference.ConferenceRepository;
+import org.npopov.conference.conference.ConferenceService;
+import org.npopov.conference.exceptions.PersonAlreadyParticipatingException;
+import org.npopov.conference.exceptions.RoomIsFullException;
+import org.npopov.conference.exceptions.TimeNotAvailableException;
+import org.npopov.conference.person.Person;
+import org.npopov.conference.person.PersonService;
+import org.npopov.conference.room.Room;
+import org.npopov.conference.room.RoomService;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -162,7 +162,7 @@ public class TestConferenceService {
         when(conferenceRepository.findById(anyLong())).thenReturn(Optional.of(createdConference));
 
         assertEquals(1, createdConference.getPersons().size());
-        assertThrows(PersonAlreadyParticipating.class, () -> conferenceService.addPerson(createdConference.getId(), 1L));
+        assertThrows(PersonAlreadyParticipatingException.class, () -> conferenceService.addPerson(createdConference.getId(), 1L));
         assertEquals(1, createdConference.getPersons().size());
     }
 

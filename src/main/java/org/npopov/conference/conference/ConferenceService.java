@@ -1,16 +1,16 @@
-package org.npopov.netgroup.conference;
+package org.npopov.conference.conference;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.npopov.netgroup.exceptions.EntityNotFoundException;
-import org.npopov.netgroup.exceptions.PersonAlreadyParticipating;
-import org.npopov.netgroup.exceptions.RoomIsFullException;
-import org.npopov.netgroup.exceptions.TimeNotAvailableException;
-import org.npopov.netgroup.person.Person;
-import org.npopov.netgroup.person.PersonService;
-import org.npopov.netgroup.room.Room;
-import org.npopov.netgroup.room.RoomService;
-import org.npopov.netgroup.helpers.TimeSlot;
+import org.npopov.conference.exceptions.EntityNotFoundException;
+import org.npopov.conference.exceptions.PersonAlreadyParticipatingException;
+import org.npopov.conference.exceptions.RoomIsFullException;
+import org.npopov.conference.exceptions.TimeNotAvailableException;
+import org.npopov.conference.person.Person;
+import org.npopov.conference.person.PersonService;
+import org.npopov.conference.room.Room;
+import org.npopov.conference.room.RoomService;
+import org.npopov.conference.helpers.TimeSlot;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -86,7 +86,7 @@ public class ConferenceService {
         Set<Person> personSet = conference.getPersons();
         if (personSet.contains(person)) {
             log.info("Person " + person.getName() + " already participating in conference " + conference.getName());
-            throw new PersonAlreadyParticipating(Person.class, "name", person.getName());
+            throw new PersonAlreadyParticipatingException(Person.class, "name", person.getName());
         }
 
         if (conference.getPersons().size() == room.getCapacity()) {

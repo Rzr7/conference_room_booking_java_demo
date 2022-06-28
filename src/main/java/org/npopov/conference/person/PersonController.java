@@ -1,7 +1,7 @@
-package org.npopov.netgroup.person;
+package org.npopov.conference.person;
 
 import lombok.RequiredArgsConstructor;
-import org.npopov.netgroup.conference.Conference;
+import org.npopov.conference.conference.Conference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,4 +1,4 @@
-package org.npopov.netgroup.conference;
+package org.npopov.conference.conference;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

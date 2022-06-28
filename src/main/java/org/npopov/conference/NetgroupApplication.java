@@ -1,4 +1,4 @@
-package org.npopov.netgroup;
+package org.npopov.conference;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

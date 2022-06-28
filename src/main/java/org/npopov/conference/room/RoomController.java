@@ -1,8 +1,8 @@
-package org.npopov.netgroup.room;
+package org.npopov.conference.room;
 
 import lombok.RequiredArgsConstructor;
-import org.npopov.netgroup.conference.Conference;
-import org.npopov.netgroup.helpers.TimeSlot;
+import org.npopov.conference.conference.Conference;
+import org.npopov.conference.helpers.TimeSlot;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

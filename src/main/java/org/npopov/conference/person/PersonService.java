@@ -1,8 +1,8 @@
-package org.npopov.netgroup.person;
+package org.npopov.conference.person;
 
 import lombok.RequiredArgsConstructor;
-import org.npopov.netgroup.conference.Conference;
-import org.npopov.netgroup.exceptions.EntityNotFoundException;
+import org.npopov.conference.conference.Conference;
+import org.npopov.conference.exceptions.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.npopov.netgroup.helpers;
+package org.npopov.conference.helpers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

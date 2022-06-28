@@ -1,4 +1,4 @@
-package org.npopov.netgroup.exceptions;
+package org.npopov.conference.exceptions;
 
 import org.springframework.util.StringUtils;
 

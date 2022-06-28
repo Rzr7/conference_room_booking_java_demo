@@ -1,4 +1,4 @@
-package org.npopov.netgroup.conference;
+package org.npopov.conference.conference;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package org.npopov.netgroup.exceptions;
+package org.npopov.conference.exceptions;
 
 import org.springframework.util.StringUtils;
 
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class PersonAlreadyParticipating extends RuntimeException {
-    public PersonAlreadyParticipating(Class clazz, String... searchParamsMap) {
-        super(PersonAlreadyParticipating.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, (Object[]) searchParamsMap)));
+public class PersonAlreadyParticipatingException extends RuntimeException {
+    public PersonAlreadyParticipatingException(Class clazz, String... searchParamsMap) {
+        super(PersonAlreadyParticipatingException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, (Object[]) searchParamsMap)));
     }
 
     private static String generateMessage(String entity, Map<String, String> searchParams) {

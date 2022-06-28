@@ -1,4 +1,4 @@
-package org.npopov.netgroup.room;
+package org.npopov.conference.room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

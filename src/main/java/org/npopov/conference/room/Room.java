@@ -1,4 +1,4 @@
-package org.npopov.netgroup.room;
+package org.npopov.conference.room;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.npopov.netgroup.conference.Conference;
-import org.npopov.netgroup.exceptions.EntityNotFoundException;
-import org.npopov.netgroup.helpers.TimeSlot;
+import org.npopov.conference.conference.Conference;
+import org.npopov.conference.exceptions.EntityNotFoundException;
+import org.npopov.conference.helpers.TimeSlot;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

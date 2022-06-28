@@ -1,4 +1,4 @@
-package org.npopov.netgroup.person;
+package org.npopov.conference.person;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.npopov.netgroup.conference.Conference;
+import org.npopov.conference.conference.Conference;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

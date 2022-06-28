@@ -1,8 +1,8 @@
-package org.npopov.netgroup.exceptions.handler;
+package org.npopov.conference.exceptions.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
-import org.npopov.netgroup.exceptions.EntityNotFoundException;
+import org.npopov.conference.exceptions.EntityNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
