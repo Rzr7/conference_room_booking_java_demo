@@ -45,14 +45,7 @@ public class ConferenceService {
         Person owner = personService.getPerson(conferenceInput.getOwnerId());
         Set<Person> personSet = new HashSet<>();
         personSet.add(owner);
-        Conference conference = new Conference()
-                .setName(conferenceInput.getName())
-                .setDuration(conferenceInput.getDuration())
-                .setBookedAt(conferenceInput.getBookedAt())
-                .setOwner(owner)
-                .setPersons(personSet)
-                .setRoom(room);
-        return conferenceRepository.save(conference);
+        return conferenceRepository.save(new Conference(conferenceInput, owner, room, personSet));
     }
 
     public Conference editConference(ConferenceDTO conferenceInput) {

@@ -3,6 +3,10 @@ package org.npopov.conference.exceptions.handler;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.npopov.conference.exceptions.EntityNotFoundException;
+import org.npopov.conference.exceptions.PersonAlreadyParticipatingException;
+import org.npopov.conference.exceptions.RoomIsFullException;
+import org.npopov.conference.exceptions.TimeNotAvailableException;
+import org.npopov.conference.exceptions.UserAlreadyExistsException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -97,6 +101,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFound(
             EntityNotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler({UserAlreadyExistsException.class, PersonAlreadyParticipatingException.class, RoomIsFullException.class, TimeNotAvailableException.class})
+    protected ResponseEntity<Object> handleUserAlreadyExists(
+            UserAlreadyExistsException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

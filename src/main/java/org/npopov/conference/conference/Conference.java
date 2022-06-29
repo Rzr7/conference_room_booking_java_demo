@@ -79,4 +79,13 @@ public class Conference {
     public void logConferenceUpdate() {
         log.info("Updated conference: " + getName());
     }
+
+    public Conference(ConferenceDTO conferenceDTO, Person owner, Room room, Set<Person> personSet) {
+        this.name = conferenceDTO.getName();
+        this.duration = conferenceDTO.getDuration();
+        this.bookedAt = conferenceDTO.getBookedAt();
+        this.owner = owner;
+        this.room = room;
+        this.persons = personSet;
+    }
 }

@@ -17,10 +17,9 @@ import org.npopov.conference.person.PersonService;
 import org.npopov.conference.room.Room;
 import org.npopov.conference.room.RoomService;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,10 +44,19 @@ public class TestConferenceService {
     @Mock
     RoomService roomService;
 
-    Person person = new Person()
-            .setId(1L)
-            .setName("John Doe")
-            .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 11)));
+    Person person;
+
+    {
+        try {
+            person = new Person()
+                    .setId(1L)
+                    .setName("John Doe")
+                    .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-11"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     Room room = new Room()
             .setId(1L)
             .setName("Room 1")
@@ -127,12 +135,11 @@ public class TestConferenceService {
     }
 
     @Test
-    public void addPersonConferenceTest()
-    {
+    public void addPersonConferenceTest() throws ParseException {
         Person person2 = new Person()
                 .setId(2L)
                 .setName("John Doe 2")
-                .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 12)));
+                .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-11"));
 
         when(personService.getPerson(1L)).thenReturn(person);
         when(personService.getPerson(2L)).thenReturn(person2);
@@ -167,22 +174,21 @@ public class TestConferenceService {
     }
 
     @Test
-    public void fullRoomConferenceTest()
-    {
+    public void fullRoomConferenceTest() throws ParseException {
         Person person2 = new Person()
                 .setId(2L)
                 .setName("John Doe 2")
-                .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 12)));
+                .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-11"));
 
         Person person3 = new Person()
                 .setId(3L)
                 .setName("John Doe 3")
-                .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 13)));
+                .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-12"));
 
         Person person4 = new Person()
                 .setId(4L)
                 .setName("John Doe 4")
-                .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 14)));
+                .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-13"));
 
         when(personService.getPerson(1L)).thenReturn(person);
         when(personService.getPerson(2L)).thenReturn(person2);
@@ -207,17 +213,16 @@ public class TestConferenceService {
     }
 
     @Test
-    public void removePersonConferenceTest()
-    {
+    public void removePersonConferenceTest() throws ParseException {
         Person person2 = new Person()
                 .setId(2L)
                 .setName("John Doe 2")
-                .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 12)));
+                .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-12"));
 
         Person person3 = new Person()
                 .setId(3L)
                 .setName("John Doe 3")
-                .setBirthdate(Date.valueOf(LocalDate.of(1999, Month.FEBRUARY, 13)));
+                .setBirthdate(new SimpleDateFormat("yyyy-MM-dd").parse("1999-02-13"));
 
         when(personService.getPerson(1L)).thenReturn(person);
         when(personService.getPerson(2L)).thenReturn(person2);

@@ -3,14 +3,12 @@ package org.npopov.conference.person;
 import lombok.RequiredArgsConstructor;
 import org.npopov.conference.conference.Conference;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +23,12 @@ public class PersonController {
         return ResponseEntity.ok(personService.getPersons());
     }
 
+    @GetMapping("/info")
+    public Person getUserDetails() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return personService.getPerson(username);
+    }
+
     @GetMapping("/{personId}")
     public ResponseEntity<Person> getPerson(@PathVariable Long personId) {
         return ResponseEntity.ok(personService.getPerson(personId));
@@ -33,10 +37,5 @@ public class PersonController {
     @GetMapping("/{personId}/conferences")
     public ResponseEntity<Set<Conference>> getPersonConferences(@PathVariable Long personId) {
         return ResponseEntity.ok(personService.getPersonConferences(personId));
-    }
-
-    @PostMapping
-    public Person createPerson(@Valid @RequestBody Person personInput) {
-        return personService.createPerson(personInput);
     }
 }
