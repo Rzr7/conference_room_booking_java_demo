@@ -19,19 +19,14 @@ public class ConferenceDTO {
     @NotEmpty
     private String name;
 
-    @NotEmpty
-    @JsonProperty("booked_at")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("bookedAt")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime bookedAt;
 
     @NotNull
     private Integer duration; // in minutes
 
     @NotNull
-    @JsonProperty("room_id")
+    @JsonProperty("roomId")
     private Long roomId;
-
-    @NotNull
-    @JsonProperty("owner_id")
-    private Long ownerId;
 }

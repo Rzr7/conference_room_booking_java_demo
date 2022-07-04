@@ -12,7 +12,6 @@ import org.npopov.conference.helpers.TimeSlot;
 import org.npopov.conference.person.Person;
 import org.npopov.conference.room.Room;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,19 +41,19 @@ public class Conference {
     private Long id;
     private String name;
     @JsonProperty("booked_at")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime bookedAt;
     private Integer duration; // in minutes
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Person owner;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "conference_persons",
             joinColumns = {@JoinColumn(name = "conference_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "person_id", referencedColumnName = "id")})

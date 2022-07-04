@@ -9,8 +9,6 @@ CREATE TABLE IF NOT EXISTS conference (
     booked_at DATETIME NOT NULL,
     duration INT,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(id),
-    CONSTRAINT fk_conference_room FOREIGN KEY (room_id) REFERENCES room (id),
-    CONSTRAINT fk_conference_owner FOREIGN KEY (owner_id) REFERENCES person (id)
+    PRIMARY KEY(id)
 );
 --rollback DROP TABLE conference;

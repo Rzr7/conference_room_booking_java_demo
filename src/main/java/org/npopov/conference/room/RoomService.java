@@ -6,6 +6,7 @@ import org.npopov.conference.exceptions.EntityNotFoundException;
 import org.npopov.conference.helpers.TimeSlot;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,9 +30,20 @@ public class RoomService {
                 .toList();
     }
 
+    public List<TimeSlot> getBookedTimes(Long roomId, Date date) {
+        return getRoom(roomId)
+                .getConferencesForDate(date).stream()
+                .map(Conference::getTimeSlot)
+                .toList();
+    }
+
     public Set<Conference> getRoomConferences(Long roomId) {
         Room room = getRoom(roomId);
         return room.getConferences();
+    }
+
+    public void deleteRoom(Long roomId) {
+        roomRepository.deleteById(roomId);
     }
 
     public Room createRoom(Room roomInput) {

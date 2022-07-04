@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @Accessors(chain = true)
 public class TimeSlot {
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime from;
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime to;
 
     public static boolean isOverlapping(TimeSlot t1, TimeSlot t2) {

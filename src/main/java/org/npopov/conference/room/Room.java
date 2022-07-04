@@ -22,6 +22,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,6 +62,20 @@ public class Room {
                         .isAfter(LocalDateTime.now()))
                 .collect(Collectors.toSet());
     }
+
+    @JsonIgnore
+    public Set<Conference> getConferencesForDate(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        return conferences.stream()
+                .filter(conference ->
+                        conference.getBookedAt().getYear() == calendar.get(Calendar.YEAR) &&
+                        conference.getBookedAt().getMonthValue() == calendar.get(Calendar.MONTH) + 1 &&
+                        conference.getBookedAt().getDayOfMonth() == calendar.get(Calendar.DAY_OF_MONTH)
+                )
+                .collect(Collectors.toSet());
+    }
+
 
     public boolean isTimeAvailable(TimeSlot timeSlot) throws EntityNotFoundException {
         return getFutureConferences().stream()

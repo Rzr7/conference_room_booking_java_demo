@@ -1,8 +1,6 @@
 package org.npopov.conference.conference;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -49,16 +46,10 @@ public class ConferenceController {
         return new ResponseEntity<>(conference, HttpStatus.OK);
     }
 
-    @PostMapping("/{conferenceId}/person")
-    public ResponseEntity<String> addPerson(@PathVariable Long conferenceId, @Valid @RequestBody PersonForm personForm) {
-        conferenceService.addPerson(conferenceId, personForm.getPersonId());
+    @PostMapping("/{conferenceId}/person/{personId}")
+    public ResponseEntity<String> addPerson(@PathVariable Long conferenceId, @PathVariable Long personId) {
+        conferenceService.addPerson(conferenceId, personId);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{conferenceId}/person")
-    public ResponseEntity<String> removePerson(@PathVariable Long conferenceId, @Valid @RequestBody PersonForm personForm) {
-        conferenceService.removePerson(conferenceId, personForm.getPersonId());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{conferenceId}")
@@ -67,10 +58,9 @@ public class ConferenceController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Getter
-    @Setter
-    public static class PersonForm {
-        @NotNull
-        private Long personId;
+    @DeleteMapping("/{conferenceId}/person/{personId}")
+    public ResponseEntity<String> removePerson(@PathVariable Long conferenceId, @PathVariable Long personId) {
+        conferenceService.removePerson(conferenceId, personId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

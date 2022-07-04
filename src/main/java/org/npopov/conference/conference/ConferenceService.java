@@ -6,11 +6,12 @@ import org.npopov.conference.exceptions.EntityNotFoundException;
 import org.npopov.conference.exceptions.PersonAlreadyParticipatingException;
 import org.npopov.conference.exceptions.RoomIsFullException;
 import org.npopov.conference.exceptions.TimeNotAvailableException;
+import org.npopov.conference.helpers.TimeSlot;
 import org.npopov.conference.person.Person;
 import org.npopov.conference.person.PersonService;
 import org.npopov.conference.room.Room;
 import org.npopov.conference.room.RoomService;
-import org.npopov.conference.helpers.TimeSlot;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -42,7 +43,7 @@ public class ConferenceService {
             throw new TimeNotAvailableException(Room.class, "time", timeSlot.toString());
         }
 
-        Person owner = personService.getPerson(conferenceInput.getOwnerId());
+        Person owner = personService.getPerson(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
         Set<Person> personSet = new HashSet<>();
         personSet.add(owner);
         return conferenceRepository.save(new Conference(conferenceInput, owner, room, personSet));
@@ -58,7 +59,7 @@ public class ConferenceService {
             throw new TimeNotAvailableException(Room.class, "time", inputTimeSlot.toString());
         }
 
-        Person owner = personService.getPerson(conferenceInput.getOwnerId());
+        Person owner = personService.getPerson(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
         Set<Person> personSet = conference.getPersons();
         personSet.add(owner);
         conference

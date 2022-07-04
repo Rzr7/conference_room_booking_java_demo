@@ -43,7 +43,7 @@ public class Person {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
 
     @JsonIgnore
