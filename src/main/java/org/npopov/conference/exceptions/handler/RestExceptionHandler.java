@@ -107,7 +107,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({UserAlreadyExistsException.class, PersonAlreadyParticipatingException.class, RoomIsFullException.class, TimeNotAvailableException.class})
     protected ResponseEntity<Object> handleUserAlreadyExists(
-            UserAlreadyExistsException ex) {
+            RuntimeException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
