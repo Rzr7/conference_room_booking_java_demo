@@ -27,15 +27,16 @@ Base endpoint: `/api/conference`
 
 #### Endpoints
 
-| Method   | Endpoint                            | Body                                                                                                | Description                   |
-|----------|-------------------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------|
-| `GET`    | `/`                                 |                                                                                                     | Returns all conferences       |
-| `GET`    | `/{conferenceId}`                   |                                                                                                     | Returns conference data       |
-| `POST`   | `/`                                 | `name: String`<br/>`bookedAt: Date`<br/>`duration: Integer`<br/>`roomId: Integer`                   | Creates new conference        |
-| `PUT`    | `/`                                 | `id: Integer`<br/>`name: String`<br/>`bookedAt: Date`<br/>`duration: Integer`<br/>`roomId: Integer` | Modify existing conference    |
-| `DELETE` | `/{conferenceId}`                   |                                                                                                     | Delete conference             |
-| `POST`   | `/{conferenceId}/person/{personId}` |                                                                                                     | Add person to conference      |
-| `DELETE` | `/{conferenceId}/person/{personId}` |                                                                                                     | Delete person from conference |
+| Method   | Endpoint                            | Body                                                                              | Description                                      |
+|----------|-------------------------------------|-----------------------------------------------------------------------------------|--------------------------------------------------|
+| `GET`    | `/`                                 |                                                                                   | Returns all conferences                          |
+| `GET`    | `/{conferenceId}`                   |                                                                                   | Returns conference data                          |
+| `POST`   | `/`                                 | `name: String`<br/>`bookedAt: Date`<br/>`duration: Integer`<br/>`roomId: Integer` | Creates new conference                           |
+| `PUT`    | `/{conferenceId}`                   | `name: String`<br/>`bookedAt: Date`<br/>`duration: Integer`<br/>`roomId: Integer` | Modify existing conference                       |
+| `DELETE` | `/{conferenceId}`                   |                                                                                   | Delete conference                                |
+| `POST`   | `/{conferenceId}/person/{personId}` |                                                                                   | Add person to conference                         |
+| `DELETE` | `/{conferenceId}/person/{personId}` |                                                                                   | Delete person from conference                    |
+| `PUT`    | `/{conferenceId}/owner/{personId}`  |                                                                                   | Transfer ownership of conference to other person |
 
 ---
 
@@ -52,6 +53,7 @@ Base endpoint: `/api/room`
 | `GET`    | `/{roomId}/booked?date={date}` |                                                               | Returns room booked times for specific date (date format: `yyyy-MM-dd`) |
 | `GET`    | `/{roomId}/conferences`        |                                                               | Returns room conferences                                                |
 | `POST`   | `/`                            | `name: String`<br/>`location: String`<br/>`capacity: Integer` | Creates new room                                                        |
+| `PUT`    | `/{roomId}`                    | `name: String`<br/>`location: String`<br/>`capacity: Integer` | Modify existing room                                                    |
 | `DELETE` | `/{roomId}`                    |                                                               | Delete room                                                             |
 
 ---

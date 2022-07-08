@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 @Accessors(chain = true)
 public class ConferenceDTO {
-    private Long id;
-
     @NotEmpty
     private String name;
 

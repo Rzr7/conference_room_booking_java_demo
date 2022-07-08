@@ -2,7 +2,9 @@ package org.npopov.conference.conference;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.npopov.conference.exceptions.DontHavePermissionException;
 import org.npopov.conference.exceptions.EntityNotFoundException;
+import org.npopov.conference.exceptions.OwnershipTransferException;
 import org.npopov.conference.exceptions.PersonAlreadyParticipatingException;
 import org.npopov.conference.exceptions.RoomIsFullException;
 import org.npopov.conference.exceptions.TimeNotAvailableException;
@@ -49,8 +51,11 @@ public class ConferenceService {
         return conferenceRepository.save(new Conference(conferenceInput, owner, room, personSet));
     }
 
-    public Conference editConference(ConferenceDTO conferenceInput) {
-        Conference conference = getConference(conferenceInput.getId());
+    public Conference editConference(Long conferenceId, ConferenceDTO conferenceInput) {
+        Conference conference = getConference(conferenceId);
+        String username = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        validateOwnership(conference, username);
+
         Room room = roomService.getRoom(conferenceInput.getRoomId());
 
         TimeSlot inputTimeSlot = TimeSlot.createTimeSlot(conferenceInput.getBookedAt(), conferenceInput.getDuration());
@@ -59,7 +64,7 @@ public class ConferenceService {
             throw new TimeNotAvailableException(Room.class, "time", inputTimeSlot.toString());
         }
 
-        Person owner = personService.getPerson(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+        Person owner = personService.getPerson(username);
         Set<Person> personSet = conference.getPersons();
         personSet.add(owner);
         conference
@@ -72,8 +77,36 @@ public class ConferenceService {
         return conferenceRepository.save(conference);
     }
 
+    public Conference transferOwnership(Long conferenceId, Long personId) {
+        Conference conference = getConference(conferenceId);
+        String username = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        validateOwnership(conference, username);
+
+        if (personId.equals(conference.getOwner().getId())) {
+            throw new OwnershipTransferException(Conference.class);
+        }
+
+        Room room = conference.getRoom();
+        Person person = personService.getPerson(personId);
+        Set<Person> personSet = conference.getPersons();
+        personSet.add(person);
+
+        conference.setOwner(person);
+        conference.setPersons(personSet);
+
+        if (conference.getPersons().size() > room.getCapacity()) {
+            log.info("Room is full " + room.getName() + "(capacity: " + room.getCapacity() + ")");
+            throw new RoomIsFullException(Room.class, "capacity", room.getCapacity().toString());
+        }
+
+        return conferenceRepository.save(conference);
+    }
+
     public void addPerson(Long conferenceId, Long personId) {
         Conference conference = getConference(conferenceId);
+        String username = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        validateOwnership(conference, username);
+
         Person person = personService.getPerson(personId);
         Room room = conference.getRoom();
 
@@ -83,7 +116,7 @@ public class ConferenceService {
             throw new PersonAlreadyParticipatingException(Person.class, "name", person.getName());
         }
 
-        if (conference.getPersons().size() == room.getCapacity()) {
+        if (conference.getPersons().size() >= room.getCapacity()) {
             log.info("Room is full " + room.getName() + "(capacity: " + room.getCapacity() + ")");
             throw new RoomIsFullException(Room.class, "capacity", room.getCapacity().toString());
         }
@@ -95,12 +128,24 @@ public class ConferenceService {
 
     public void removePerson(Long conferenceId, Long personId) {
         Conference conference = getConference(conferenceId);
+        String username = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        validateOwnership(conference, username);
+
         Set<Person> personSet = conference.getPersons().stream().filter(person -> !person.getId().equals(personId)).collect(Collectors.toSet());
         conference.setPersons(personSet);
         conferenceRepository.save(conference);
     }
 
     public void deleteConference(Long conferenceId) {
+        Conference conference = getConference(conferenceId);
+        String username = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        validateOwnership(conference, username);
         conferenceRepository.deleteById(conferenceId);
+    }
+
+    public void validateOwnership(Conference conference, String username) {
+        if (!conference.getOwner().getUsername().equals(username)) {
+            throw new DontHavePermissionException(Conference.class);
+        }
     }
 }

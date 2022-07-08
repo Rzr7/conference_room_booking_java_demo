@@ -37,12 +37,15 @@ public class ConferenceController {
         return new ResponseEntity<>(conference, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Conference> editConference(@Valid @RequestBody ConferenceDTO conferenceInput) {
-        if (conferenceInput.getId() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Conference conference = conferenceService.editConference(conferenceInput);
+    @PutMapping("/{conferenceId}/owner/{personId}")
+    public ResponseEntity<Conference> transferOwnership(@PathVariable Long conferenceId, @PathVariable Long personId) {
+        Conference conference = conferenceService.transferOwnership(conferenceId, personId);
+        return new ResponseEntity<>(conference, HttpStatus.OK);
+    }
+
+    @PutMapping("/{conferenceId}")
+    public ResponseEntity<Conference> editConference(@PathVariable Long conferenceId, @Valid @RequestBody ConferenceDTO conferenceInput) {
+        Conference conference = conferenceService.editConference(conferenceId, conferenceInput);
         return new ResponseEntity<>(conference, HttpStatus.OK);
     }
 

@@ -2,7 +2,9 @@ package org.npopov.conference.exceptions.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
+import org.npopov.conference.exceptions.DontHavePermissionException;
 import org.npopov.conference.exceptions.EntityNotFoundException;
+import org.npopov.conference.exceptions.OwnershipTransferException;
 import org.npopov.conference.exceptions.PersonAlreadyParticipatingException;
 import org.npopov.conference.exceptions.RoomIsFullException;
 import org.npopov.conference.exceptions.TimeNotAvailableException;
@@ -25,6 +27,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.Objects;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -105,7 +109,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler({UserAlreadyExistsException.class, PersonAlreadyParticipatingException.class, RoomIsFullException.class, TimeNotAvailableException.class})
+    @ExceptionHandler({
+            UserAlreadyExistsException.class,
+            PersonAlreadyParticipatingException.class,
+            RoomIsFullException.class,
+            TimeNotAvailableException.class,
+            OwnershipTransferException.class,
+            DontHavePermissionException.class
+    })
     protected ResponseEntity<Object> handleUserAlreadyExists(
             RuntimeException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
@@ -145,15 +156,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, ex));
     }
 
-    /**
-     * Handle NoHandlerFoundException.
-     *
-     * @param ex
-     * @param headers
-     * @param status
-     * @param request
-     * @return
-     */
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -188,7 +190,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
                                                                       WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-        apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
+        apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName()));
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +38,12 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getRoom(roomId));
     }
 
+    @PutMapping("/{roomId}")
+    public ResponseEntity<Room> editRoom(@PathVariable Long roomId, @Valid @RequestBody Room roomInput) {
+        Room room = roomService.editRoom(roomId, roomInput);
+        return new ResponseEntity<>(room, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{roomId}")
     public ResponseEntity<String> deleteRoom(@PathVariable Long roomId) {
         roomService.deleteRoom(roomId);
@@ -46,7 +53,7 @@ public class RoomController {
     @GetMapping("/{roomId}/booked")
     public ResponseEntity<List<TimeSlot>> getBookedTimes(@PathVariable Long roomId, @RequestParam("date") String dateString) {
         if (!dateString.isEmpty()) {
-            Date dateTime = null;
+            Date dateTime;
             try {
                 dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
             } catch (ParseException e) {

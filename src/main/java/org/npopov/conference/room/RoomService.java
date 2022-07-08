@@ -49,4 +49,12 @@ public class RoomService {
     public Room createRoom(Room roomInput) {
         return roomRepository.save(roomInput);
     }
+
+    public Room editRoom(Long roomId, Room roomInput) {
+        Room room = getRoom(roomId);
+        room.setCapacity(roomInput.getCapacity());
+        room.setName(roomInput.getName());
+        room.setLocation(roomInput.getLocation());
+        return roomRepository.save(room);
+    }
 }
